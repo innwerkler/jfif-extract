@@ -21,27 +21,19 @@
 """
 import sys
 
-
-
-SOI = '\xFF\xD8'
-APP0MARKER = '\xFF\xE0'
-IDENTIFIER = 'JFIF\x00'
-EOI = '\xFF\xD9'
+SOI = b'\xFF\xD8'
+APP0MARKER = b'\xFF\xE0'
+IDENTIFIER = b'JFIF\x00'
+EOI = b'\xFF\xD9'
 
 def save_image(data, filename, number):
 
     with open("{}-{}.jpeg".format(filename, number), 'wb') as fp:
         fp.write(data)
 
-if __name__ == "__main__":
+def extract(filename):
 
-    if len(sys.argv) < 2:
-        print("usage: ./extract.py [filename]")
-        sys.exit(0)
-
-    filename = sys.argv[1]
-
-    with open(filename) as fp:
+    with open(filename, "rb") as fp:
         data = fp.read()
 
     # FIXME: let's do it the dumb way first
@@ -64,3 +56,12 @@ if __name__ == "__main__":
 
         soi = data.find(SOI)
         eoi = data.find(EOI)
+		
+if __name__ == "__main__":
+
+    if len(sys.argv) < 2:
+        print("usage: ./extract.py [filename]")
+        sys.exit(0)
+
+    filename = sys.argv[1]
+	extract(filename)
